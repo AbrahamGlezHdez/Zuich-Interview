@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZurichInterview.Application\ZurichInterview.Application.csproj" />
     <ProjectReference Include="..\ZurichInterview.Domain\ZurichInterview.Domain.csproj" />
   </ItemGroup>
 

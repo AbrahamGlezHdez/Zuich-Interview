@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using ZurichInterview.Infrastructure.Persistence;
+using ZurichInterview.Application.Configurations;
+using ZurichInterview.Infrastructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +17,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 var summaries = new[]
 {
