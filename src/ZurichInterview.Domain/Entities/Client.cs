@@ -2,7 +2,7 @@
 
 public class Client
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string IdentificationNumber { get; set; } = default!; // 10 dígitos
     public string Name { get; set; } = default!;
     public string MiddleName { get; set; } = default!;

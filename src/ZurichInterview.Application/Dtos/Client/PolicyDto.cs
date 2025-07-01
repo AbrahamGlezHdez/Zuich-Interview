@@ -4,13 +4,13 @@ namespace ZurichInterview.Application.Dtos.Client;
 
 public class PolicyDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
-    public Guid ClientId { get; set; }
+    public int ClientId { get; set; }
 
     public PolicyType Type { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public decimal InsuredAmount { get; set; }
+    public decimal Amount { get; set; }
     public PolicyStatus Status { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public class ClientDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string IdentificationNumber { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string MiddleName { get; set; } = default!;

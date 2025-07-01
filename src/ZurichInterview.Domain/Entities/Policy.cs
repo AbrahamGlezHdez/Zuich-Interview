@@ -4,8 +4,8 @@ namespace ZurichInterview.Domain.Entities;
 
 public class Policy
 {
-    public Guid Id { get; set; }
-    public Guid ClientId { get; set; }
+    public int Id { get; set; }
+    public int ClientId { get; set; }
     public PolicyType Type { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime ExpirationDate { get; set; }

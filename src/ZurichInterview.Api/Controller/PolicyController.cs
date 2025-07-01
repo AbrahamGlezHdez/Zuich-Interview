@@ -23,7 +23,7 @@ public class PolicyController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PolicyDto>> GetById(Guid id)
+    public async Task<ActionResult<PolicyDto>> GetById(int id)
     {
         var policy = await _policyService.GetByIdAsync(id);
         if (policy is null)
@@ -39,14 +39,14 @@ public class PolicyController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<PolicyDto>> Update(Guid id, [FromBody] PolicyDto dto)
+    public async Task<ActionResult<PolicyDto>> Update(int id, [FromBody] PolicyDto dto)
     {
         var updated = await _policyService.UpdateAsync(id, dto);
         return Ok(updated);
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(int id)
     {
         await _policyService.DeleteAsync(id);
         return NoContent();

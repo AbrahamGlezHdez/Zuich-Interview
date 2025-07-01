@@ -24,7 +24,7 @@ public class PolicyService : IPolicyService
         return _mapper.Map<IEnumerable<PolicyDto>>(policies);
     }
 
-    public async Task<PolicyDto?> GetByIdAsync(Guid id)
+    public async Task<PolicyDto?> GetByIdAsync(int id)
     {
         var policy = await _context.Policies.FindAsync(id);
         return policy == null ? null : _mapper.Map<PolicyDto>(policy);
@@ -38,7 +38,7 @@ public class PolicyService : IPolicyService
         return _mapper.Map<PolicyDto>(policy);
     }
 
-    public async Task<PolicyDto> UpdateAsync(Guid id, PolicyDto dto)
+    public async Task<PolicyDto> UpdateAsync(int id, PolicyDto dto)
     {
         var policy = await _context.Policies.FindAsync(id);
         if (policy == null)
@@ -49,7 +49,7 @@ public class PolicyService : IPolicyService
         return _mapper.Map<PolicyDto>(policy);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(int id)
     {
         var policy = await _context.Policies.FindAsync(id);
         if (policy != null)

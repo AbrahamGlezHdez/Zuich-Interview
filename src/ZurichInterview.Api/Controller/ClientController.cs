@@ -23,7 +23,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ClientDto>> GetById(Guid id)
+    public async Task<ActionResult<ClientDto>> GetById(int id)
     {
         var client = await _clientService.GetByIdAsync(id);
         if (client is null)
@@ -39,14 +39,14 @@ public class ClientController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<ClientDto>> Update(Guid id, [FromBody] ClientDto dto)
+    public async Task<ActionResult<ClientDto>> Update(int id, [FromBody] ClientDto dto)
     {
         var updated = await _clientService.UpdateAsync(id, dto);
         return Ok(updated);
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(int id)
     {
         await _clientService.DeleteAsync(id);
         return NoContent();

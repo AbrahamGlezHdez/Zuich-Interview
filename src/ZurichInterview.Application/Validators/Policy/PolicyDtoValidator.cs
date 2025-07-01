@@ -14,7 +14,7 @@ public class PolicyDtoValidator : AbstractValidator<PolicyDto>
             .LessThan(x => x.ExpirationDate)
             .WithMessage("La fecha de inicio debe ser anterior a la de expiración");
 
-        RuleFor(x => x.InsuredAmount)
+        RuleFor(x => x.Amount)
             .GreaterThan(0).WithMessage("El monto asegurado debe ser mayor a 0");
     }
 }

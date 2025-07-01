@@ -21,7 +21,6 @@ public class ClientService : IClientService
     public async Task<ClientDto> CreateAsync(ClientDto dto)
     {
         var entity = _mapper.Map<Client>(dto);
-        entity.Id = Guid.NewGuid();
 
         _db.Clients.Add(entity);
         await _db.SaveChangesAsync();
@@ -35,13 +34,13 @@ public class ClientService : IClientService
         return _mapper.Map<IEnumerable<ClientDto>>(clients);
     }
 
-    public async Task<ClientDto?> GetByIdAsync(Guid id)
+    public async Task<ClientDto?> GetByIdAsync(int id)
     {
         var client = await _db.Clients.FindAsync(id);
         return client == null ? null : _mapper.Map<ClientDto>(client);
     }
 
-    public async Task<ClientDto> UpdateAsync(Guid id, ClientDto dto)
+    public async Task<ClientDto> UpdateAsync(int id, ClientDto dto)
     {
         var client = await _db.Clients.FindAsync(id);
         if (client == null) throw new Exception("Cliente no encontrado");
@@ -52,7 +51,7 @@ public class ClientService : IClientService
         return _mapper.Map<ClientDto>(client);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(int id)
     {
         var client = await _db.Clients.FindAsync(id);
         if (client == null) throw new Exception("Cliente no encontrado");
