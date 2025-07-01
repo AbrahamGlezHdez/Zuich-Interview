@@ -14,6 +14,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(sqlStringConnection));
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IPolicyService, PolicyService>();
         return services;
     }
 }

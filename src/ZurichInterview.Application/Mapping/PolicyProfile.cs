@@ -4,10 +4,10 @@ using ZurichInterview.Domain.Entities;
 
 namespace ZurichInterview.Application.Mapping;
 
-public class ClientProfile : Profile
+public class PolicyProfile : Profile
 {
-    public ClientProfile()
+    public PolicyProfile()
     {
-        CreateMap<ClientDto, Client>().ReverseMap();
+        CreateMap<Policy, PolicyDto>().ReverseMap();
     }
 }
