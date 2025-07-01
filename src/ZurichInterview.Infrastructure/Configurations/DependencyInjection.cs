@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ZurichInterview.Application.Interfaces.Authentication;
 using ZurichInterview.Application.Interfaces.Services;
+using ZurichInterview.Infrastructure.Authentication;
 using ZurichInterview.Infrastructure.Persistence;
 using ZurichInterview.Infrastructure.Services;
 
@@ -15,6 +17,9 @@ public static class DependencyInjection
             options.UseSqlServer(sqlStringConnection));
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<IPolicyService, PolicyService>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
         return services;
     }
 }

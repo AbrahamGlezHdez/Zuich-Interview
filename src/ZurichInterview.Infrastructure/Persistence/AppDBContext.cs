@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<Policy> Policies => Set<Policy>();
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,5 +34,24 @@ public class AppDbContext : DbContext
                 .WithMany(c => c.Policies)
                 .HasForeignKey(p => p.ClientId);
         });
+        
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(u => u.Id);
+
+            entity.Property(u => u.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.HasIndex(u => u.Email).IsUnique();
+
+            entity.Property(u => u.Password)
+                .IsRequired();
+
+            entity.Property(u => u.Rol)
+                .IsRequired()
+                .HasMaxLength(20);
+        });
+        
     }
 }
