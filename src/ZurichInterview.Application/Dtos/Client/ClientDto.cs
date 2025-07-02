@@ -9,4 +9,6 @@ public class ClientDto
     public string SurName { get; set; } = default!;
     public string Email { get; set; } = default!;
     public string Phone { get; set; } = default!;
+    public string Address { get; set; } = default!;
+    public int? UsuarioId { get; set; } = default;
 }

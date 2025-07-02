@@ -10,7 +10,7 @@ public class Policy
     public DateTime StartDate { get; set; }
     public DateTime ExpirationDate { get; set; }
     public decimal Amount { get; set; }
-    public PolicyStatus Status { get; set; }
+    public PolicyStatus Status { get; set; } = PolicyStatus.Active;
 
     public Client Client { get; set; } = default!;
 }

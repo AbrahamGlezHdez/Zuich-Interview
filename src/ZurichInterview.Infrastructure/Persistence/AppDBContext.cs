@@ -24,12 +24,26 @@ public class AppDbContext : DbContext
             entity.Property(c => c.SurName).IsRequired().HasMaxLength(100);
             entity.Property(c => c.Email).IsRequired();
             entity.Property(c => c.Phone).IsRequired();
+            entity.HasOne(c => c.Usuario)
+                .WithOne()
+                .HasForeignKey<Client>(c => c.UsuarioId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Policy>(entity =>
         {
             entity.HasKey(p => p.Id);
             entity.Property(p => p.Amount).HasColumnType("decimal(18,2)").IsRequired();
+            entity.HasOne(p => p.Client)
+                .WithMany(c => c.Policies)
+                .HasForeignKey(p => p.ClientId);
+            entity.HasKey(p => p.Id);
+            entity.Property(p => p.Amount).HasColumnType("decimal(18,2)").IsRequired();
+    
+            entity.Property(p => p.Status)
+                .HasConversion<string>() // <--- aquí la magia
+                .IsRequired();
+
             entity.HasOne(p => p.Client)
                 .WithMany(c => c.Policies)
                 .HasForeignKey(p => p.ClientId);

@@ -9,6 +9,10 @@ public class Client
     public string SurName { get; set; } = default!;
     public string Email { get; set; } = default!;
     public string Phone { get; set; } = default!;
+    public string Address { get; set; } = default!;
 
     public ICollection<Policy> Policies { get; set; } = new List<Policy>();
+    
+    public int? UsuarioId { get; set; }   // <-- Relación con Usuario
+    public Usuario? Usuario { get; set; } 
 }

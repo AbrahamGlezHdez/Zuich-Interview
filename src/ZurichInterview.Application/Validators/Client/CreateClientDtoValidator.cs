@@ -22,5 +22,12 @@ public class ClientDtoValidator : AbstractValidator<ClientDto>
 
         RuleFor(x => x.Phone)
             .NotEmpty().WithMessage("Teléfono obligatorio");
+        
+        RuleFor(c => c.Phone)
+            .NotEmpty().WithMessage("El teléfono es obligatorio")
+            .Matches(@"^[0-9]{10}$").WithMessage("El teléfono debe tener 10 dígitos");
+
+        RuleFor(c => c.Address)
+            .NotEmpty().WithMessage("La dirección es obligatoria");
     }
 }

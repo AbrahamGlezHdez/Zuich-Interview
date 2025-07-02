@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ZurichInterview.Application.Dtos.Client;
 using ZurichInterview.Application.Interfaces.Services;
 using ZurichInterview.Domain.Entities;
+using ZurichInterview.Domain.Entities.Enums;
 using ZurichInterview.Infrastructure.Persistence;
 
 namespace ZurichInterview.Infrastructure.Services;
@@ -28,6 +29,15 @@ public class PolicyService : IPolicyService
     {
         var policy = await _context.Policies.FindAsync(id);
         return policy == null ? null : _mapper.Map<PolicyDto>(policy);
+    }
+    
+    public async Task<List<PolicyDto>> GetByCientAsync(int clientId)
+    {
+        var policies = await _context.Policies
+            .Where(p => p.ClientId == clientId)
+            .ToListAsync();
+
+        return _mapper.Map<List<PolicyDto>>(policies);
     }
 
     public async Task<PolicyDto> CreateAsync(PolicyDto dto)
@@ -57,5 +67,30 @@ public class PolicyService : IPolicyService
             _context.Policies.Remove(policy);
             await _context.SaveChangesAsync();
         }
+    }
+    
+    public async Task<List<PolicyDto>> GetByUsuarioIdAsync(int usuarioId)
+    {
+        var policies = await _context.Policies
+            .Include(p => p.Client)
+            .Where(p => p.Client.UsuarioId == usuarioId)
+            .ToListAsync();
+
+        return _mapper.Map<List<PolicyDto>>(policies);
+    }
+
+    public async Task<bool> CancelByUsuarioAsync(int policyId, int usuarioId)
+    {
+        var policy = await _context.Policies
+            .Include(p => p.Client)
+            .FirstOrDefaultAsync(p => p.Id == policyId && p.Client.UsuarioId == usuarioId);
+
+        if (policy == null || policy.Status == PolicyStatus.Cancelled)
+            return false;
+
+        policy.Status = PolicyStatus.Cancelled;
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

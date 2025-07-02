@@ -59,4 +59,10 @@ public class ClientService : IClientService
         _db.Clients.Remove(client);
         await _db.SaveChangesAsync();
     }
+    
+    public async Task<ClientDto?> GetByUsuarioIdAsync(int usuarioId)
+    {
+        var client = await _db.Clients.FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+        return client is null ? null : _mapper.Map<ClientDto>(client);
+    }
 }
