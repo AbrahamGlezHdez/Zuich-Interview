@@ -1,2 +1,57 @@
-<h2>Panel del Cliente</h2>
-<p>Desde aquí el cliente podrá ver y gestionar sus pólizas.</p>
+<h2>Mis Pólizas</h2>
+
+<div class="client-info">
+  <p><strong>Nombre:</strong> {{ client?.name }} {{ client?.middleName }} {{ client?.surName }}</p>
+  <p><strong>Email:</strong> {{ client?.email }}</p>
+  <p><strong>Identificación:</strong> {{ client?.identificationNumber }}</p>
+  <p><strong>Teléfono:</strong>
+    <span *ngIf="!editing">{{ client?.phone }}</span>
+    <input *ngIf="editing" [(ngModel)]="editForm.phone" name="phone" />
+  </p>
+  <p><strong>Dirección:</strong>
+    <span *ngIf="!editing">{{ client?.address }}</span>
+    <input *ngIf="editing" [(ngModel)]="editForm.address" name="address" />
+  </p>
+
+  <div *ngIf="!editing">
+    <button (click)="editing = true">Editar</button>
+  </div>
+
+  <div *ngIf="editing">
+    <button (click)="saveChanges()">Guardar</button>
+    <button (click)="cancelEdit()">Cancelar</button>
+  </div>
+</div>
+
+<h2>Mis Pólizas</h2>
+
+<table class="client-table" *ngIf="policies.length > 0; else noPolicies">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Tipo</th>
+    <th>Inicio</th>
+    <th>Expiración</th>
+    <th>Monto</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let policy of policies">
+    <td>{{ policy.id }}</td>
+    <td>{{ getPolicyTypeLabel(policy.type) }}</td>
+    <td>{{ policy.startDate | date: 'mediumDate' }}</td>
+    <td>{{ policy.expirationDate | date: 'mediumDate' }}</td>
+    <td>${{ policy.amount }}</td>
+    <td>{{ getPolicyStatusLabel(policy.status) }}</td>
+    <td>
+      <button *ngIf="policy.status === 0" (click)="cancelPolicy(policy)">Cancelar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<ng-template #noPolicies>
+  <p>No tienes pólizas registradas.</p>
+</ng-template>

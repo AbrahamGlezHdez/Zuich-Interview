@@ -61,6 +61,26 @@ public class ClientController : ControllerBase
         return NoContent();
     }
     
+    [HttpGet("me")]
+    [Authorize(Roles = Roles.Cliente)]
+    public async Task<ActionResult<ClientDto>> GetMyInfo()
+    {
+        var usuarioIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+        if (usuarioIdClaim == null)
+            return Unauthorized();
+
+        if (!int.TryParse(usuarioIdClaim.Value, out int usuarioId))
+            return Unauthorized("Id de usuario inválido.");
+
+        var client = await _clientService.GetByUsuarioIdAsync(usuarioId);
+
+        if (client is null)
+            return NotFound("Cliente no encontrado.");
+
+        return Ok(client);
+    }
+    
     [HttpPut("me")]
     [Authorize(Roles = Roles.Cliente)]
     public async Task<IActionResult> UpdateMyInfo([FromBody] ClientSelfUpdateDto dto)

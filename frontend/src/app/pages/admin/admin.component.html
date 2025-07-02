@@ -1,29 +1,130 @@
 <h2>Administración de Clientes</h2>
 
-<table *ngIf="clients.length > 0; else noClients">
-  <thead>
-  <tr>
-    <th>Nombre</th>
-    <th>Email</th>
-    <th>Teléfono</th>
-    <th>Dirección</th>
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let client of clients">
-    <td>{{ client.name }} {{ client.middleName }} {{ client.surName }}</td>
-    <td>{{ client.email }} </td>
-    <td>{{ client.phone }}</td>
-    <td>{{ client.address }}</td>
-    <td>
-      <button (click)="editClient(client)">Editar</button>
-      <button (click)="deleteClient(client.id)">Eliminar</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+
+<h3>{{ editingClient ? 'Editar Cliente' : 'Nuevo Cliente' }}</h3>
+<form (ngSubmit)="submitClient()" #clientForm="ngForm">
+  <input type="text" [(ngModel)]="form.identificationNumber" name="identificationNumber" placeholder="Número de identificación" required />
+  <input type="text" [(ngModel)]="form.name" name="name" placeholder="Nombre" required />
+  <input type="text" [(ngModel)]="form.middleName" name="middleName" placeholder="Segundo Nombre" />
+  <input type="text" [(ngModel)]="form.surName" name="surName" placeholder="Apellido" required />
+  <input type="email" [(ngModel)]="form.email" name="email" placeholder="Correo" required />
+  <input type="text" [(ngModel)]="form.phone" name="phone" placeholder="Teléfono" />
+  <input type="text" [(ngModel)]="form.address" name="address" placeholder="Dirección" />
+  <input type="number" [(ngModel)]="form.usuarioId" name="usuarioId" placeholder="ID de usuario" required />
+
+  <button type="submit">{{ editingClient ? 'Actualizar' : 'Crear' }}</button>
+  <button type="button" (click)="cancelEdit()" *ngIf="editingClient">Cancelar</button>
+</form>
+
+
+<h2>Administración de Clientes</h2>
+
+<ng-container *ngIf="clients$ | async as clients">
+  <table *ngIf="clients.length > 0; else noClients">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Identificación</th>
+      <th>Nombre completo</th>
+      <th>Email</th>
+      <th>Teléfono</th>
+      <th>Dirección</th>
+      <th>Usuario ID</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let client of clients">
+      <td>{{ client.id }}</td>
+      <td>{{ client.identificationNumber }}</td>
+      <td>{{ client.name }} {{ client.middleName }} {{ client.surName }}</td>
+      <td>{{ client.email }}</td>
+      <td>{{ client.phone }}</td>
+      <td>{{ client.address }}</td>
+      <td>{{ client.usuarioId }}</td>
+      <td>
+        <button (click)="editClient(client)">Editar</button>
+        <button (click)="deleteClient(client.id)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</ng-container>
 
 <ng-template #noClients>
   <p>No hay clientes registrados.</p>
 </ng-template>
+
+
+
+<h2>Administración de Pólizas</h2>
+
+
+<h3>{{ editingPolicy ? 'Editar Póliza' : 'Nueva Póliza' }}</h3>
+<form (ngSubmit)="submitPolicy()" #policyFormRef="ngForm">
+  <input type="text" [(ngModel)]="policyForm.policyNumber" name="policyNumber" placeholder="Número de póliza" required />
+
+  <select [(ngModel)]="policyForm.type" name="type" required>
+    <option [ngValue]="0">Vida</option>
+    <option [ngValue]="1">Auto</option>
+    <option [ngValue]="2">Salud</option>
+    <option [ngValue]="3">Hogar</option>
+  </select>
+
+  <input type="date" [(ngModel)]="policyForm.startDate" name="startDate" required />
+  <input type="date" [(ngModel)]="policyForm.expirationDate" name="expirationDate" required />
+
+  <input type="number" [(ngModel)]="policyForm.amount" name="amount" placeholder="Monto" required />
+
+  <select [(ngModel)]="policyForm.status" name="status" required>
+    <option [ngValue]="0">Activa</option>
+    <option [ngValue]="1">Cancelada</option>
+  </select>
+
+  <select [(ngModel)]="policyForm.clientId" name="clientId" required>
+    <option *ngFor="let client of clients" [ngValue]="client.id">
+      {{ client.name }} {{ client.surName }}
+    </option>
+  </select>
+
+  <button type="submit">{{ editingPolicy ? 'Actualizar' : 'Crear' }}</button>
+  <button type="button" (click)="cancelPolicyEdit()" *ngIf="editingPolicy">Cancelar</button>
+</form>
+
+<ng-container *ngIf="policies$ | async as policies">
+  <table *ngIf="policies.length > 0; else noPolicies">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cliente</th>
+      <th>Tipo</th>
+      <th>Inicio</th>
+      <th>Expiración</th>
+      <th>Monto</th>
+      <th>Status</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let policy of policies">
+      <td>{{ policy.id }}</td>
+      <td>{{ getClientNameById(policy.clientId) }}</td>
+      <td>{{ getPolicyTypeLabel(policy.type) }}</td>
+      <td>{{ policy.startDate | date }}</td>
+      <td>{{ policy.expirationDate | date }}</td>
+      <td>{{ policy.amount }}</td>
+      <td>{{ getPolicyStatusLabel(policy.status) }}</td>
+      <td>
+        <button (click)="editPolicy(policy)">Editar</button>
+        <button (click)="deletePolicy(policy.id)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<ng-template #noPolicies>
+  <p>No hay pólizas registradas.</p>
+</ng-template>
+
+

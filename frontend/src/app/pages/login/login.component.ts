@@ -28,15 +28,7 @@ export class LoginComponent {
     }).subscribe({
       next: (res) => {
         this.authService.setToken(res.token);
-
-        const role = this.authService.getUserRole();
-        if (role === 'Administrador') {
-          this.router.navigate(['/admin']);
-        } else if (role === 'Cliente') {
-          this.router.navigate(['/client']);
-        } else {
-          this.error = 'Rol desconocido.';
-        }
+        this.authService.redirectUserByRole(); // ← redirección limpia según el rol
       },
       error: () => {
         this.error = 'Credenciales inválidas.';

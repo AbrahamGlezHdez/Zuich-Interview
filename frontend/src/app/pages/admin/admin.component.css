@@ -1,4 +1,41 @@
-h2 {
-  color: #0d6efd;
-  margin-top: 20px;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+thead {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+th {
+  font-weight: bold;
+  background-color: #007acc;
+  color: white;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  background-color: #007acc;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #005f99;
 }
