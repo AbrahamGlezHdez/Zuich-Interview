@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem(this.tokenKey);
   }
 
   logout() {
@@ -33,6 +33,19 @@ export class AuthService {
       return payload.role || null;
     } catch (e) {
       return null;
+    }
+  }
+
+  /** 🚀 Redirige al usuario basado en su rol */
+  redirectUserByRole() {
+    const role = this.getUserRole();
+
+    if (role === 'Administrador') {
+      this.router.navigate(['/admin']);
+    } else if (role === 'Cliente') {
+      this.router.navigate(['/client']);
+    } else {
+      this.logout(); // rol desconocido
     }
   }
 }
