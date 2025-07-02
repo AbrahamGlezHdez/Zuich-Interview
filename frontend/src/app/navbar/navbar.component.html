@@ -1,5 +1,6 @@
-<nav>
-  <a routerLink="/login" routerLinkActive="active">Login</a> |
-  <a routerLink="/admin" routerLinkActive="active">Administrador</a> |
-  <a routerLink="/client" routerLinkActive="active">Cliente</a>
-</nav>
+@if (isAuthenticated) {
+  <nav>
+    <span>Rol: {{ role }}</span>
+    <button (click)="logout()">Cerrar sesión</button>
+  </nav>
+}

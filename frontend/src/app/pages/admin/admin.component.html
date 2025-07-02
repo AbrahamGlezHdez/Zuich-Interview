@@ -1,2 +1,29 @@
-<h2>Panel del Administrador</h2>
-<p>Aquí se podrá gestionar clientes y pólizas.</p>
+<h2>Administración de Clientes</h2>
+
+<table *ngIf="clients.length > 0; else noClients">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Email</th>
+    <th>Teléfono</th>
+    <th>Dirección</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let client of clients">
+    <td>{{ client.name }} {{ client.middleName }} {{ client.surName }}</td>
+    <td>{{ client.email }} </td>
+    <td>{{ client.phone }}</td>
+    <td>{{ client.address }}</td>
+    <td>
+      <button (click)="editClient(client)">Editar</button>
+      <button (click)="deleteClient(client.id)">Eliminar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<ng-template #noClients>
+  <p>No hay clientes registrados.</p>
+</ng-template>

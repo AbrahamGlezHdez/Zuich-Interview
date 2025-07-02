@@ -1,42 +1,38 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private tokenKey = 'token';
 
-  constructor() {}
+  constructor(private router: Router) {}
 
-  login(token: string): void {
+  setToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  logout(): void {
-    localStorage.removeItem(this.tokenKey);
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
-  getRole(): string | null {
+  getUserRole(): string | null {
     const token = this.getToken();
     if (!token) return null;
 
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload["role"] || null;
-  }
-
-  getUserId(): number | null {
-    const token = this.getToken();
-    if (!token) return null;
-
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return parseInt(payload["sub"]);
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || null;
+    } catch (e) {
+      return null;
+    }
   }
 }

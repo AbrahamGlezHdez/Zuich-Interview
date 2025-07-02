@@ -11,4 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 })
 export class AppComponent {
   title = 'frontend';
+  get isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
 }

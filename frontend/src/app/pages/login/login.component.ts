@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,9 @@ export class LoginComponent {
   password = '';
   error = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {
+
+  }
 
   login() {
     this.http.post<any>('https://localhost:7046/api/Auth/login', {
@@ -24,12 +27,9 @@ export class LoginComponent {
       password: this.password
     }).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.token);
+        this.authService.setToken(res.token);
 
-        // Decodificar JWT (simplificado) para obtener el rol
-        const payload = JSON.parse(atob(res.token.split('.')[1]));
-        const role = payload.role;
-
+        const role = this.authService.getUserRole();
         if (role === 'Administrador') {
           this.router.navigate(['/admin']);
         } else if (role === 'Cliente') {
@@ -38,9 +38,8 @@ export class LoginComponent {
           this.error = 'Rol desconocido.';
         }
       },
-      error: (err) => {
-        this.error = 'Credenciales inválidas';
-        console.error(err);
+      error: () => {
+        this.error = 'Credenciales inválidas.';
       }
     });
   }
